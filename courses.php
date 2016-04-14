@@ -17,6 +17,15 @@ if (!$link) {
 
    }
 
+if(isset($_POST['deleteItem']))
+{
+  // here comes your delete query: use $_POST['deleteItem'] as your id
+    $delete = $_POST['deleteItem'];
+    $query = "DELETE FROM TERM where CRS_ID = '$delete'"; 
+    mysqli_query($link, $query);
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -32,24 +41,29 @@ if (!$link) {
   <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 <body>
- <nav class="light-blue lighten-1" role="navigation">
+<nav class="light-blue lighten-1" role="navigation">
     <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Transcript System</a>
       <ul class="right hide-on-med-and-down">
+        <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Administrator<i class="material-icons right">arrow_drop_down</i></a></li>
+        <li><a href="transcripts.php">Transcript</a></li>
+      </ul>
+
+    <ul id="dropdown1" class="dropdown-content">
         <li><a href="index.php">Student</a></li>
         <li><a href="courses.php">Courses</a></li>
         <li><a href="schools.php">Schools</a></li>
         <li><a href="terms.php">Terms</a></li>
         <li><a href="performance.php">Grades</a></li>
-        <li><a href="transcripts.php">Transcript</a></li>
-      </ul>
-
+        <li><a href="universities.php">Universities</a></li>
+    </ul>
+        
       <ul id="nav-mobile" class="side-nav">
         <li><a href="index.php">Student</a></li>
         <li><a href="courses.php">Courses</a></li>
         <li><a href="schools.php">Schools</a></li>
         <li><a href="terms.php">Terms</a></li>
         <li><a href="performance.php">Grades</a></li>
-        <li><a href="transcripts.php">Transcript</a></li>
+        <li><a href="universities.php">Transcript</a></li>
       </ul>
       <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
@@ -108,6 +122,9 @@ if (!$link) {
                             echo '<td>' . $row[CRS_ID] .  '</td>';
                             echo '<td>' . $row[CRS_NAME] . '</td>';
                             echo '<td>' . $row[CRS_CRED] . '</td>';
+                            echo '<td><button class="waves-effect waves-light-blue btn-flat" type="submit" name="deleteItem" value="'.$row[TRM_ID].'" >
+                                    <i class="material-icons">delete</i>
+                                  </button></td>';
                           echo '</tr>';
                        }
 

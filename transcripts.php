@@ -60,7 +60,7 @@ if (!$link) {
                         ?>
                   </select>
                 </div>
-                <div class="input-field col m4">
+                <!---div class="input-field col m4">
                   <select class="browser-default"  name="trm_id" id ="trm_id">
                     <option value="" disabled selected>Select a Term</option>
                     <?php
@@ -84,7 +84,7 @@ if (!$link) {
                         ?>
                   </select>
                 </div>
-            </div>
+            </div---->
                
                <input class="btn waves-effect waves-light light-blue" type="submit"   name="submit" value="submit">
                 
@@ -117,6 +117,8 @@ if (!$link) {
               <table class="highlight">
                 <thead>
                   <tr>
+                      <th data-field="stu_id">Student</th>
+                      <th data-field="stu_id">University</th>
                       <th data-field="stu_id">Course</th>
                       <th data-field="trm_id">Term</th>
                       <th data-field="pfm_grade">Grade</th>
@@ -133,37 +135,44 @@ if (!$link) {
                         
                          $trm_query= ' PERFORMANCE.TRM_ID =  "'.$term.'" AND';
                          $crs_query= ' COURSE.CRS_ID =  "'.$course.'" AND';
-                         $stu_query= ' STU_ID = "'.$student.'" AND';
+                         $stu_query= ' STU_ID = "'.$student.'"';
 
-                          $top_query = 'SELECT COURSE.CRS_ID, COURSE.CRS_NAME, PERFORMANCE.TRM_ID, PERFORMANCE.PFM_GRADE
+                          $top_query = 'SELECT DISTINCT *
                                     FROM PERFORMANCE, COURSE, TERM
                                     WHERE ';
                               
-                           $bot_query=' PERFORMANCE.CRS_ID = COURSE.CRS_ID
-                                    AND PERFORMANCE.TRM_ID = TERM.TRM_ID';
+                           $bot_query='';
                         
                            $options = array($trm_query, $crs_query); 
                            $midquery = '';
                         
                             if(!empty($student)){
                                $midquery = $midquery.$stu_query;
+                               
                             }    
                         
                             if(!empty($term)){
                                $midquery = $midquery.$trm_query;
+                                 $bot_query = $bot_query.' PERFORMANCE.TRM_ID = TERM.TRM_ID AND';
                             }
                         
                             if(!empty($course)){
                                $midquery = $midquery.$crs_query;
+                                 $bot_query = $bot_query.' PERFORMANCE.CRS_ID = COURSE.CRS_ID AND';
                             }
                            
                         
                             $midquery.'<br>';
+                            
+                            #$bot_query='GROUP BY TERM.TRM_YR';
                         
                             $query = $top_query.$midquery.$bot_query;
                         
-                        if(empty($student.$term.$course)){
-                            $query='';
+                        if(empty($student)){
+                            $query='SELECT * 
+                            FROM PERFORMANCE NATURAL JOIN STUDENT
+                            NATURAL JOIN TERM
+                            ORDER BY TERM.TRM_ID DESC';
                         }
                         
                         echo $query;
@@ -171,7 +180,9 @@ if (!$link) {
                     if( $result= mysqli_query($link, $query)) {
                         while ($row = mysqli_fetch_array($result)) {
                           echo '<tr>';
-                            echo '<td>' . $row[CRS_NAME] . '</td>';
+                            echo '<td>' . $row[STU_NAME] . '</td>';
+                            echo '<td>' . $row[UNI_ID] . '</td>';
+                            echo '<td>' . $row[CRS_ID] . '</td>';
                             echo '<td>' . $row[TRM_ID] . '</td>';
                             echo '<td>' . $row[PFM_GRADE] . '</td>';
                           echo '</tr>';

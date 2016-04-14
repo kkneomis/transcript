@@ -15,6 +15,15 @@ if (!$link) {
     mysqli_query($link, $query);
    }
 
+if(isset($_POST['deleteItem']))
+{
+  // here comes your delete query: use $_POST['deleteItem'] as your id
+    $delete = $_POST['deleteItem'];
+    $query = "DELETE FROM TERM where PFM_ID = '$delete'"; 
+    mysqli_query($link, $query);
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -33,21 +42,26 @@ if (!$link) {
 <nav class="light-blue lighten-1" role="navigation">
     <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">Transcript System</a>
       <ul class="right hide-on-med-and-down">
+        <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Administrator<i class="material-icons right">arrow_drop_down</i></a></li>
+        <li><a href="transcripts.php">Transcript</a></li>
+      </ul>
+
+    <ul id="dropdown1" class="dropdown-content">
         <li><a href="index.php">Student</a></li>
         <li><a href="courses.php">Courses</a></li>
         <li><a href="schools.php">Schools</a></li>
         <li><a href="terms.php">Terms</a></li>
         <li><a href="performance.php">Grades</a></li>
-        <li><a href="transcripts.php">Transcript</a></li>
-      </ul>
-
+        <li><a href="universities.php">Universities</a></li>
+    </ul>
+        
       <ul id="nav-mobile" class="side-nav">
         <li><a href="index.php">Student</a></li>
         <li><a href="courses.php">Courses</a></li>
         <li><a href="schools.php">Schools</a></li>
         <li><a href="terms.php">Terms</a></li>
         <li><a href="performance.php">Grades</a></li>
-        <li><a href="transcripts.php">Transcript</a></li>
+        <li><a href="universities.php">Transcript</a></li>
       </ul>
       <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
     </div>
@@ -109,12 +123,24 @@ if (!$link) {
                   </select>
                 </div>
             </div>
-                <div class="row">
+                
+                
+         <div class="row"> 
                 <div class="input-field col s8">
-                  <input value="" id="pfm_grade" name="pfm_grade" type="text" class="validate">
-                  <label for="trs_grade"> Grade</label>
+                    <select  class="browser-default" id="pfm_grade" name="pfm_grade" >
+                      <option value="" disabled selected>Choose a grade letter</option>  
+                      <option value="A">A</option>
+                      <option value="B">B</option>
+                      <option value="C">C</option>
+                      <option value="D">D</option>
+                      <option value="E">E</option>
+                      <option value="F">F</option>
+                      <option value="I">I</option>
+                      <option value="W">W</option>
+                    </select>
                 </div>
             </div>
+                
              <input class="btn waves-effect waves-light light-blue" type="submit"   name="submit" value="submit">
 
             </form>
@@ -143,6 +169,9 @@ if (!$link) {
                             echo '<td>' . $row[CRS_ID] . '</td>';
                             echo '<td>' . $row[TRM_ID] . '</td>';
                             echo '<td>' . $row[PFM_GRADE] . '</td>';
+                            echo '<td><button class="waves-effect waves-light-blue btn-flat" type="submit" name="deleteItem" value="'.$row[TRM_ID].'" >
+                                    <i class="material-icons">delete</i>
+                                  </button></td>';
                           echo '</tr>';
                        }
 

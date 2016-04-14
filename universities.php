@@ -6,13 +6,12 @@ if (!$link) {
 
   if($_POST['submit'])  {
 
-     $id = $_POST['stu_id'];
-     $name = $_POST['stu_name'];
-     $grad = $_POST['stu_grad_yr'];
-     $school = $_POST['schl_id'];
+     $id = $_POST['uni_id'];
+     $name = $_POST['uni_name'];
+     $location = $_POST['uni_location'];
    
         
-    $query = "INSERT INTO STUDENT VALUES ('$id', '$name', '$grad', '$school')";
+    $query = "INSERT INTO UNIVERSITY VALUES ('$id', '$name', '$location')";
     mysqli_query($link, $query);
 
 
@@ -22,10 +21,11 @@ if(isset($_POST['deleteItem']))
 {
   // here comes your delete query: use $_POST['deleteItem'] as your id
     $delete = $_POST['deleteItem'];
-    $query = "DELETE FROM TERM where STU_ID = '$delete'"; 
+    $query = "DELETE FROM TERM where UNI_ID = '$delete'"; 
     mysqli_query($link, $query);
 
 }
+
 
 ?>
 
@@ -71,46 +71,31 @@ if(isset($_POST['deleteItem']))
   </nav>
     
  <div class="container"> 
-     <h2>Students</h2>
+     <h2>Universities</h2>
      <div class="row">
          <div class="col s6">
           <div class="row">
             <form class="col s12" method="post">
               <div class="row">
-                <div class="input-field col s8">
-                  <input value="@" id="stu_id" name="stu_id" type="text" class="validate">
-                  <label for="stu_id">Student ID</label>
+                <div class="input-field col s10">
+                  <input value="" id="uni_id" name="uni_id" type="text" class="validate">
+                  <label for="uni_id">University ID</label>
                 </div>
             </div>
 
             <div class="row"> 
-                <div class="input-field col s8">
-                  <input id="stu_name" name="stu_name" type="text" class="validate">
-                  <label for="stu_name">Student Name</label>
+                <div class="input-field col s10">
+                  <input id="uni_name" name="uni_name" type="text" class="validate">
+                  <label for="uni_name">University Name</label>
                 </div>
             </div>
 
             <div class="row"> 
-                <div class="input-field col s8">
-                  <input id="stu_grad_yr" name="stu_grad_yr" type="text" class="validate">
-                  <label for="stu_grad_yr">Graduation Year</label>
+                <div class="input-field col s10">
+                  <input id="uni_location" name="uni_location" type="text" class="validate">
+                  <label for="uni_location">University Location</label>
                 </div>
             </div>
-
-            <div class="row"> 
-                <div class="input-field col s8">
-                  <select class="browser-default"  name="schl_id" id ="schl_id">
-                    <option value="" disabled selected>Choose your School</option>
-                    <?php
-                        if( $result= mysqli_query($link, "SELECT * FROM SCHOOL")) {   
-                              while ($row = mysqli_fetch_array($result)) {
-                                    echo '<option value="'.$row[SCHL_ID].'">'. $row[SCHL_NAME] .'</option>';
-                               }
-                             } 
-                        ?>
-                  </select>
-                </div>
-            </div> 
              <input class="btn waves-effect waves-light light-blue" type="submit"   name="submit" value="submit">
 
             </form>
@@ -122,25 +107,23 @@ if(isset($_POST['deleteItem']))
               <table class="highlight">
                 <thead>
                   <tr>
-                      <th data-field="stu_id">Student ID</th>
-                      <th data-field="stu_name">Name</th>
-                      <th data-field="stu_grad_yr">Graduation Year</th>
-                      <th data-field="schl_id">School</th>
+                      <th data-field="uni_id">University ID</th>
+                      <th data-field="uni_name">Name</th>
+                      <th data-field="uni_location">Location</th>
                   </tr>
                 </thead>
 
                 <tbody>
                 <?php    
-                 $query = "SELECT * FROM STUDENT";
+                 $query = "SELECT * FROM UNIVERSITY";
 
-                    if( $result= mysqli_query($link, "SELECT * FROM STUDENT")) {
+                    if( $result= mysqli_query($link, $query)) {
 
                         while ($row = mysqli_fetch_array($result)) {
                          echo '<tr>';
-                            echo '<td>' . $row[STU_ID] .  '</td>';
-                            echo '<td>' . $row[STU_NAME] . '</td>';
-                            echo '<td>' . $row[STU_GRAD_YR] . '</td>';
-                            echo '<td>' . $row[SCHL_ID] . '</td>';
+                            echo '<td>' . $row[UNI_ID] .  '</td>';
+                            echo '<td>' . $row[UNI_NAME] . '</td>';
+                            echo '<td>' . $row[UNI_LOCATION] . '</td>';
                             echo '<td><button class="waves-effect waves-light-blue btn-flat" type="submit" name="deleteItem" value="'.$row[TRM_ID].'" >
                                     <i class="material-icons">delete</i>
                                   </button></td>';
